@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Samyog - Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 50%, #16213e 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            color: #ffffff;
+        }
+
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .star {
+            position: absolute;
+            background: #ffffff;
+            border-radius: 50%;
+            animation: twinkle 2s infinite alternate;
+        }
+
+        @keyframes twinkle {
+            0% { opacity: 0.3; transform: scale(1); }
+            100% { opacity: 1; transform: scale(1.2); }
+        }
+
+        .container {
+            position: relative;
+            z-index: 2;
+            background: rgba(20, 20, 30, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 2.5rem;
+            width: 100%;
+            max-width: 420px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #00d4ff, #7b68ee, #ff6b9d);
+            border-radius: 24px 24px 0 0;
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .logo h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #00d4ff, #7b68ee);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.02em;
+        }
+
+        .logo p {
+            color: #a0a0a0;
+            font-size: 0.95rem;
+            margin-top: 0.5rem;
+            font-weight: 300;
+        }
+
+        .form-group {
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            position: absolute;
+            top: 1rem;
+            left: 1.25rem;
+            font-size: 0.9rem;
+            color: #a0a0a0;
+            font-weight: 400;
+            transition: all 0.3s ease;
+            pointer-events: none;
+        }
+
+        .form-group input:focus + label,
+        .form-group input:valid + label {
+            top: -0.5rem;
+            left: 0.75rem;
+            font-size: 0.75rem;
+            color: #00d4ff;
+            background: rgba(20, 20, 30, 0.95);
+            padding: 0 0.5rem;
+            border-radius: 6px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 1rem 1.25rem;
+            background: rgba(40, 40, 60, 0.6);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            font-size: 1rem;
+            color: #ffffff;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #00d4ff;
+            box-shadow: 0 0 0 4px rgba(0, 212, 255, 0.1);
+            background: rgba(40, 40, 60, 0.8);
+        }
+
+        .form-group input::placeholder {
+            color: transparent;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, #00d4ff, #7b68ee);
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 30px rgba(0, 212, 255, 0.3);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .toggle-link {
+            text-align: center;
+            margin-top: 1.5rem;
+            color: #a0a0a0;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .toggle-link:hover {
+            color: #00d4ff;
+        }
+
+        .success-screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 100%);
+            border-radius: 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transform: scale(0.8);
+            transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+            z-index: 10;
+        }
+
+        .success-screen.active {
+            opacity: 1;
+            visibility: visible;
+            transform: scale(1);
+        }
+
+        .success-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #00d4ff, #7b68ee);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 2rem;
+            animation: bounce 0.6s ease-out;
+        }
+
+        .success-icon::after {
+            content: '✓';
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        @keyframes bounce {
+            0% { transform: scale(0); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        .success-message {
+            text-align: center;
+            max-width: 320px;
+        }
+
+        .success-message h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #00d4ff, #7b68ee);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .success-message p {
+            color: #a0a0a0;
+            line-height: 1.6;
+            font-size: 1rem;
+        }
+
+        .logout-btn {
+            margin-top: 2rem;
+            padding: 0.75rem 2rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #ffffff;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+
+        .loading {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 20;
+        }
+
+        .loading.active {
+            display: flex;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(0, 212, 255, 0.2);
+            border-top: 3px solid #00d4ff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .error {
+            color: #ff6b9d;
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+
+        .error.show {
+            display: block;
+            animation: shake 0.5s ease-in-out;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                margin: 1rem;
+                padding: 2rem 1.5rem;
+            }
+            
+            .logo h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Stars Background -->
+    <div class="stars" id="stars"></div>
+
+    <div class="container" id="container">
+        <!-- Login Form -->
+        <div id="loginForm">
+            <div class="logo">
+                <h1>Samyog</h1>
+                <p>Welcome back 🌙</p>
+            </div>
+
+            <form id="loginFormElement">
+                <div class="form-group">
+                    <input type="text" id="loginUsername" name="username" required>
+                    <label for="loginUsername">Username</label>
+                </div>
+
+                <div class="form-group">
+                    <input type="password" id="loginPassword" name="password" required>
+                    <label for="loginPassword">Password</label>
+                </div>
+
+                <div class="error" id="loginError">Invalid username or password</div>
+
+                <button type="submit" class="btn">Log In</button>
+            </form>
+
+            <div class="toggle-link" onclick="showSignup()">Don't have an account? <span style="color: #00d4ff;">Sign up</span></div>
+        </div>
+
+        <!-- Signup Form -->
+        <div id="signupForm" style="display: none;">
+            <div class="logo">
+                <h1>Samyog</h1>
+                <p>Create your account 🌟</p>
+            </div>
+
+            <form id="signupFormElement">
+                <div class="form-group">
+                    <input type="text" id="signupUsername" name="username" required>
+                    <label for="signupUsername">Choose Username</label>
+                    <div class="error" id="usernameError">Username already taken or invalid</div>
+                </div>
+
+                <div class="form-group">
+                    <input type="password" id="signupPassword" name="password" required minlength="6">
+                    <label for="signupPassword">Password</label>
+                    <div class="error" id="passwordError">Password must be at least 6 characters</div>
+                </div>
+
+                <button type="submit" class="btn">Sign Up</button>
+            </form>
+
+            <div class="toggle-link" onclick="showLogin()">Already have an account? <span style="color: #00d4ff;">Log in</span></div>
+        </div>
+
+        <!-- Loading Spinner -->
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+        </div>
+    </div>
+
+    <!-- Success Screen -->
+    <div class="success-screen" id="successScreen">
+        <div class="success-icon"></div>
+        <div class="success-message">
+            <h2>Welcome back!</h2>
+            <p id="personalizedMessage"></p>
+            <button class="logout-btn" onclick="logout()">Log out</button>
+        </div>
+    </div>
+
+    <script>
+        // Simple localStorage-based user database
+        let users = JSON.parse(localStorage.getItem('samyog_users')) || {};
+
+        // Create animated stars
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            for (let i = 0; i < 50; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.width = star.style.height = (Math.random() * 3 + 1) + 'px';
+                star.style.animationDelay = Math.random() * 2 + 's';
+                star.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                starsContainer.appendChild(star);
+            }
+        }
+
+        // Form handling
+        document.getElementById('signupFormElement').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('signupUsername').value.trim();
+            const password = document.getElementById('signupPassword').value;
+            
+            // Validation
+            if (username.length < 3) {
+                showError('usernameError', 'Username must be at least 3 characters');
+                return;
+            }
+            if (password.length < 6) {
+                showError('passwordError', 'Password must be at least 6 characters');
+                return;
+            }
+            if (users[username]) {
+                showError('usernameError', 'Username already taken');
+                return;
+            }
+
+            // Create user
+            users[username] = btoa(password); // Simple base64 encoding for demo
+            localStorage.setItem('samyog_users', JSON.stringify(users));
+            
+            alert('Account created successfully! Please log in.');
+            showLogin();
+        });
+
+        document.getElementById('loginFormElement').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('loginUsername').value.trim();
+            const password = document.getElementById('loginPassword').value;
+            
+            if (!users[username] || users[username] !== btoa(password)) {
+                showError('loginError', 'Invalid username or password');
+                return;
+            }
+
+            // Show loading
+            document.getElementById('loading').classList.add('active');
+            
+            // Simulate loading delay
+            setTimeout(() => {
+                document.getElementById('loading').classList.remove('active');
+                showSuccess(username);
+            }, 1500);
+        });
+
+        function showError(errorId, message) {
+            const errorEl = document.getElementById(errorId);
+            errorEl.textContent = message;
+            errorEl.classList.add('show');
+            setTimeout(() => errorEl.classList.remove('show'), 5000);
+        }
+
+        function showSuccess(username) {
+            document.getElementById('personalizedMessage').innerHTML = 
+                `Thanks, <strong>${username}</strong>! For logging in. This website is still under development, so stay tuned. Login again soon once Samyog\'s website is fully updated.`;
+            
+            document.getElementById('successScreen').classList.add('active');
+        }
+
+        function showSignup() {
+            document.getElementById('loginForm').style.display = 'none';
+            document.getElementById('signupForm').style.display = 'block';
+        }
+
+        function showLogin() {
+            document.getElementById('signupForm').style.display = 'none';
+            document.getElementById('loginForm').style.display = 'block';
+            
+            // Clear errors
+            document.querySelectorAll('.error').forEach(el => el.classList.remove('show'));
+        }
+
+        function logout() {
+            document.getElementById('successScreen').classList.remove('active');
+            showLogin();
+            document.getElementById('loginFormElement').reset();
+            document.getElementById('signupFormElement').reset();
+        }
+
+        // Initialize
+        createStars();
+        showLogin();
+
+        // Auto-focus first input
+        document.getElementById('loginUsername').focus();
+    </script>
+</body>
+  </html>
